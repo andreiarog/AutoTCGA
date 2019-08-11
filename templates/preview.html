@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+   {% extends "template.html" %}
+   {% block content %}
+   <h2>Preview of dataset created </h2>   
+      <h3> Variables used </h3>
+      <p>Chosen class: {{ chosen_class }} <br>
+      Preprocessing mode: {{ preprocessing }}<br>
+      Population: {{ population }} <br>
+      Algorithm: {{ predictor }} <br>
+      Sub-set of features to Include: {{ user_Features_Include }} <br>
+      Sub-set of features to Exclude: {{ user_Features_Exclude }} <br>
+      User input columns: {{ inputDf }} </p>
+      {% if tables is none %}
+        {{error}}
+      {% else %}
+        {% for table in tables %}
+          {{ table|safe }}
+        {% endfor %}
+      {% endif %}
+   <p> Go back <a href="{{ url_for('home') }}">home</a>.</p>
+   <p> Input again <a href="{{ url_for('tool') }}">here</a>.</p>
+   <form action = "http://localhost:5000/result" method = "POST">
+         <input type = "hidden" name = "Algorithm" id="predictor_input" value="{{ predictor}}"/>
+         <input type = "hidden" name = "Class" id="class_input" value="{{ chosen_class}}"/>
+         <input type = "hidden" name = "Population" id="population_input" value="{{ population}}"/>
+         <input type = "hidden" name = "Sub-set of features to Include" id="user_Features_Include_input" value="{{ user_Features_Include}}"/>
+         <input type = "hidden" name = "Sub-set of features to Exclude" id="user_Features_Exclude_input" value="{{ user_Features_Exclude}}"/>
+         <input type = "hidden" name = "User input columns" id="inputDf_input" value="{{ inputDf}}"/>         
+         <p><input type = "submit" value = "Submit" /></p>
+    </form>
+
+   {% endblock %}
+   </body>
+</html>

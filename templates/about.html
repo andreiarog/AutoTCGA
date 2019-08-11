@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+
+    <h1> About AutoTCGA </h1>
+    <p>AutoTCGA implements a machine learning pipeline that pre-processes biological data and uses it to train classifiers to predict immune-evasion events. The tool allows the full personalization of the dataset, from a selection of available sources with different attributes, and any attribute (not just the immune-evasion events)can be selected as class (using the 'Other' option), while the remaining will be used as training features. The models are optimized with a parameter grid approach, using RandomSerchCV and GridSearchCV algorithms from scikit-learn python library. </p>
+    <h3> Instructions:</h3>
+     <ul>
+      <li>Algorithm: tree-based classifier chosen to be trained with dataset after pre-processing and personalization.</li>
+      <li>Class: attribute chosen to be used as class in prediction.</li>
+      <li>Dataset(s): source of features used to train the algorithm (the chosen class must belong to this dataset or to the attributes given as input).</li>
+      <li>Population: cancer type of the patients, works as row filter. </li>
+      <li>Pre-processing: mode defined by a number between 1 and 6 which represent a combination of three techniques (normalization, categorization and creation of dummy variables).</li>
+      <li>Feature Selection and Feature Engineering: set of feature techniques to be applied to the dataset after pre-processing and personalization. Feature Engineering is only available for the dataset of PanImmune source. </li>
+      <li>Feature Selection and Feature Engineering: set of feature techniques to be applied to the dataset after pre-processing and personalization. Feature Engineering is only available for the dataset of PanImmune source. </li>
+      <li>Sub-set of features to exclude: features from the chosen dataset(s) that the user wishes to exclude; all other will remain. </li>
+      <li>Sub-set of features to include: features from the chosen dataset(s) that the user wishes to remain; all others wil be excluded. </li>
+      <li>User input columns: new attributes added from the user, including a mandatory 'sample_code' column with the TCGA code in the correct data shape. </li>
+    </ul> 
+    <br>
+    <p>Go back <a href="{{ url_for('home') }}">home</a>.</p>
+
+    {% endblock %}
+  </body>
+</html>

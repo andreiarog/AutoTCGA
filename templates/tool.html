@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+   {% extends "template.html" %}
+   {% block content %}
+	<h2>Input your parameters </h2>
+    <form action = "http://localhost:5000/result" method = "POST">
+        <p> Algorithm <select name="Algorithm">
+		    <option value="DT" selected>Decision Tree</option>
+		    <option value="RF">Random Forest</option>
+		    <option value="XGB">XGBoost</option>
+		</select>
+		</p>
+
+		<p> Class <select name="Class" id="select_opt" class="form-control" onchange="showfield_class(this.options[this.selectedIndex].value)" required> 
+			<option value="IS" selected>Immunosupressors</option>
+			<option value="HA">Neoantigens</option>
+			<option value="multiclass">Multiclass</option>
+			<option value="multilabel">Multilabel</option>						
+			<option value="Other">Other</option>
+		</select></p>
+		<div id="div1"></div>  
+		
+		<p> Dataset(s) <br>
+		<input id="TCGA" type="checkbox" name="datasets[]" value="TCGA" onclick="showfield_datasets()" checked/>
+		<label for="TCGA">PanImmune</label>
+		<br />
+		<input id="immunodulator" type="checkbox" name="datasets[]" value="immunodulator" onclick="showfield_datasets()" />
+		<label for="immunodulator">Immunomodulators Expression</label>
+		<br />
+		<input id="msignaturedb" type="checkbox" name="datasets[]" value="msignaturedb" onclick="showfield_datasets()"/>
+		<label for="msignaturedb">Mutations's Signatures</label>
+		<br />
+		</p>
+
+        <p> Population <select name="Population" >
+		    <option value="Overall" selected>Overall</option>
+		    <option value="ACC">ACC</option>
+		    <option value="BLCA">BLCA</option>
+		    <option value="BRCA">BRCA</option>
+		    <option value="CESC">CESC</option>
+		    <option value="CHOL">CHOL</option>
+		    <option value="COAD">COAD</option>
+		    <option value="DLBC">DLBC</option>
+		    <option value="ESCA">ESCA</option>
+		    <option value="HNSC">HNSC</option>
+		    <option value="KICH">KICH</option>
+		    <option value="KIRC">KIRC</option>
+		    <option value="KIRP">KIRP</option>
+		    <option value="LGG">LGG</option>
+		    <option value="LIHC">LIHC</option>
+		    <option value="LUAD">LUAD</option>
+		    <option value="LUSC">LUSC</option>
+		    <option value="MESO">MESO</option>
+		    <option value="OV">OV</option>
+		    <option value="PAAD">PAAD</option>
+		    <option value="PCPG">PCPG</option>
+		    <option value="PRAD">PRAD</option>
+		    <option value="READ">READ</option>
+		    <option value="SARC">SARC</option>
+		    <option value="SKCM">SKCM</option>
+		    <option value="STAD">STAD</option>
+		    <option value="TGCT">TGCT</option>
+		    <option value="THCA">THCA</option>
+		    <option value="THYM">THYM</option>
+		    <option value="UCEC">UCEC</option>
+		    <option value="UCS">UCS</option>
+		    <option value="UVM">UVM</option>
+		</select>
+		</p>
+
+		<div id="div3">
+		<p> Preprocessing <select name="Preprocessing"> 
+			<option value=1 >1</option>
+			<option value=2 >2</option>
+			<option value=3 >3</option>
+			<option value=4 >4</option>
+			<option value=5 selected>5</option>
+			<option value=6 >6</option>
+		</select></p>
+		</div>
+
+		<p> Feature Selection <select name="featureselection"> 
+			<option value="False" selected>False</option>
+			<option value="True" >True</option>
+		</select></p>
+		
+		<div id="div2">
+		<p> Feature Engineering <select name="featureEngineering"> 
+			<option value="False" >False</option>
+			<option value="True" >True</option>
+		</select></p>
+		</div>		
+
+		<fieldset style="background-color:#ccc;">
+    	<legend style="color=black">Advanced settings:</legend> 
+	    
+	    <p>Sub-set of features to exclude: </p><textarea name="user_Features_Exclude" rows="4" cols="65" placeholder="Input features' names, each in double quotes."></textarea>
+
+    	<p>Sub-set of features to include: </p><textarea name="user_Features_Include" rows="4" cols="65" placeholder="Input features' names, each in double quotes."></textarea>
+    	<p>Input columns: </p><textarea name="inputDf" rows="4" cols="65" placeholder="Alternative 1:                                              {'Name':['Tom', 'nick', 'krish', 'jack'], 'Age':[20, 21, 19, 18]} Alternative 2:                                                     [{'a': 1, 'b': 2, 'c':3}, {'a':10, 'b': 20, 'c': 30}] "></textarea>
+    	</fieldset>
+
+		<p><input type = "submit" value = "Submit" />
+	    <input type = "submit" formaction = "http://localhost:5000/preview" method="POST" value = "Preview" /></p>
+    </form>
+
+
+	<script type="text/javascript">
+	function showfield_class(value){
+		if(value == 'Other') {
+			document.getElementById('div1').innerHTML = 'Other class: <input type="text" name="Class-other" />';
+		}
+		else {
+			document.getElementById('div1').innerHTML='';
+		}	
+	}
+	</script>
+	
+
+	<script type="text/javascript">
+	function showfield_datasets(){
+		if (document.getElementById('TCGA').checked) {
+			document.getElementById('div2').innerHTML = "Feature Engineering <select name='featureEngineering' selected> <option value='False' >False</option> <option value='True' >True</option></select>";
+			document.getElementById('div3').innerHTML = "Preprocessing <select name='Preprocessing'><option value=1 >1</option><option value=2 >2</option><option value=3 >3</option><option value=4 >4</option><option value=5 selected>5</option><option value=6 >6</option></select>";
+		} else {
+	    	document.getElementById('div2').innerHTML='';
+	    	document.getElementById('div3').innerHTML = "Preprocessing <select name='Preprocessing'><option value=1 >1</option><option value=3 >3</option></select>";  
+	  	}
+	}
+	</script>
+
+
+    <br>
+    <p>Go back <a href="{{ url_for('home') }}">home</a>.</p>
+   {% endblock %}
+  </body>
+</html>

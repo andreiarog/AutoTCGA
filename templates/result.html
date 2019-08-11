@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+   {% extends "template.html" %}
+   {% block content %}
+   <h2>Model created! </h2> 
+
+   <h3> Variables used </h3>
+
+   <p>Chosen class: {{ chosen_class }} <br>
+   Preprocessing mode: {{ preprocessing }}<br>
+   Population: {{ population }} <br>
+   Algorithm: {{ predictor }} <br>
+   Sub-set of features to Include: {{ user_Features_Include }} <br>
+   Sub-set of features to Exclude: {{ user_Features_Exclude }} <br>
+   User input columns: {{ inputDf }} </p>
+
+   <h3> Tree model</h3>
+
+      {% for key, value in result %}
+         {% if key == 'title' %}
+            <p style="text-decoration: underline;"> {{ value }}</p>
+         {% elif key == 'text' %} 
+            {{ value }}  
+            <br>
+         {% elif key == 'tree' %}
+            <img src="data:image/png;base64,{{ value|safe }}" />
+            <br>
+         {% elif key == 'boxplot' %}
+            <img src="data:image/png;base64,{{ value|safe }}" />
+            <br>
+         {% endif %}
+
+      {% endfor %}
+
+
+
+      <h3> Evaluation metrics:</h3>
+      {% for eval in evaluation %}
+         {{ eval }}
+         <br>
+      {% endfor %}
+
+      {% if warnings is none %}
+         <h3>Warning: </h3>
+         <p> Both the dataset and the model were loaded from database, from pre-existing files. </p>
+      {% else %}
+         <h3> Warnings:</h3>
+         {% for warning in warnings %}
+            {{ warning }}
+            <br>
+         {% endfor %}
+
+      {% endif %}
+   <!--<img src="data:image/png;base64,{{tree_output|safe}}" /> -->
+   <br>
+   <p>Go back <a href="{{ url_for('home') }}">home</a>.</p>
+   <p> Submit again <a href="{{ url_for('tool') }}">here</a>.</p>
+   {% endblock %}
+   </body>
+</html>
